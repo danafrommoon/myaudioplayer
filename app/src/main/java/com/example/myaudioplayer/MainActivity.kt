@@ -15,30 +15,37 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
-    var imageView:ImageView = findViewById(R.id.imageView)
-    var songTitle: TextView = findViewById(R.id.songTitle)
+    lateinit var imageView: ImageView
+    lateinit var songTitle : TextView
     var currentIndex = 0
     val songs:ArrayList<Int> = ArrayList()
-    var mMediaPlayer: MediaPlayer  = MediaPlayer.create(getApplicationContext(), songs.get(currentIndex))
-    var mSeekBarTime: SeekBar = findViewById(R.id.seekBarTime)
+    lateinit var mMediaPlayer: MediaPlayer
+    lateinit var mSeekBarTime: SeekBar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-        var play: ImageView = findViewById(R.id.play)
-        var prev:ImageView = findViewById(R.id.prev)
-        var next:ImageView = findViewById(R.id.next)
-        var mSeekBarVol:SeekBar = findViewById(R.id.seekBarVol)
-        val runnable:Runnable
-        val mAudioManager: AudioManager =getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
         songs.add(0, R.raw.furelise)
         songs.add(1, R.raw.gluboko)
         songs.add(2, R.raw.makeitright)
         songs.add(3, R.raw.regular)
         songs.add(4, R.raw.saveyourtears)
+
+        mMediaPlayer = MediaPlayer.create(getApplicationContext(), songs.get(currentIndex))
+
+        imageView = findViewById(R.id.imageView)
+        songTitle = findViewById(R.id.songTitle)
+        mSeekBarTime = findViewById(R.id.seekBarTime)
+
+        var play: ImageView = findViewById(R.id.play)
+        var prev:ImageView = findViewById(R.id.prev)
+        var next:ImageView = findViewById(R.id.next)
+        var mSeekBarVol:SeekBar = findViewById(R.id.seekBarVol)
+        val runnable:Runnable
+        val mAudioManager: AudioManager =getSystemService(AUDIO_SERVICE) as AudioManager
+
 
 
         val maxV = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
