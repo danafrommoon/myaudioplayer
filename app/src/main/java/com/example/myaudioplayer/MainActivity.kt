@@ -1,9 +1,15 @@
 package com.example.myaudioplayer
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +18,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,11 +29,14 @@ class MainActivity : AppCompatActivity() {
     val songs:ArrayList<Int> = ArrayList()
     lateinit var mMediaPlayer: MediaPlayer
     lateinit var mSeekBarTime: SeekBar
+    private val CHANNEL_ID = "channel_id_example_01"
+    private val notificationId = 101
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        createNotificationChannel()
 
         songs.add(0, R.raw.furelise)
         songs.add(1, R.raw.gluboko)
@@ -130,31 +141,154 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val name = "Notification title"
+            val descriptionText = "Notification Description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            val  notificationManager : NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
     private fun songNames() {
         if (currentIndex === 0)
         {
             songTitle.setText("Fur Elise - Ludwig van Beethoven")
             imageView.setImageResource(R.drawable.furelise)
+
+            val intent = Intent(this,MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+
+            val pendingIntent: PendingIntent = PendingIntent.getActivity(this,0,intent,0)
+
+            val bitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.furelise)
+            val bitmapLargeIcon = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.furelise)
+
+            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle("Fur Elise - Ludwig van Beethoven")
+                    .setContentText("now playing . . .")
+                    .setLargeIcon(bitmapLargeIcon)
+                    .setStyle(NotificationCompat.BigPictureStyle().bigPicture(bitmap))
+                    .setContentIntent(pendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            with(NotificationManagerCompat.from(this)){
+                notify(notificationId, builder.build())
+            }
         }
         if (currentIndex === 1)
         {
             songTitle.setText("Глубоко - Монатик")
             imageView.setImageResource(R.drawable.gluboko)
+
+            val intent = Intent(this,MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+
+            val pendingIntent:PendingIntent = PendingIntent.getActivity(this,0,intent,0)
+
+            val bitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.gluboko)
+            val bitmapLargeIcon = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.gluboko)
+
+            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle("Глубоко - Монатик")
+                    .setContentText("now playing . . .")
+                    .setLargeIcon(bitmapLargeIcon)
+                    .setStyle(NotificationCompat.BigPictureStyle().bigPicture(bitmap))
+                    .setContentIntent(pendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            with(NotificationManagerCompat.from(this)){
+                notify(notificationId, builder.build())
+            }
         }
         if (currentIndex === 2)
         {
             songTitle.setText("Make It Right - BTS")
             imageView.setImageResource(R.drawable.makeitright)
+
+            val intent = Intent(this,MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+
+            val pendingIntent:PendingIntent = PendingIntent.getActivity(this,0,intent,0)
+
+            val bitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.makeitright)
+            val bitmapLargeIcon = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.makeitright)
+
+            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle("Make It Right - BTS")
+                    .setContentText("now playing . . .")
+                    .setLargeIcon(bitmapLargeIcon)
+                    .setStyle(NotificationCompat.BigPictureStyle().bigPicture(bitmap))
+                    .setContentIntent(pendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            with(NotificationManagerCompat.from(this)){
+                notify(notificationId, builder.build())
+            }
         }
         if (currentIndex === 3)
         {
             songTitle.setText("Regular - NCT")
             imageView.setImageResource(R.drawable.regular)
+
+            val intent = Intent(this,MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+
+            val pendingIntent:PendingIntent = PendingIntent.getActivity(this,0,intent,0)
+
+            val bitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.regular)
+            val bitmapLargeIcon = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.regular)
+
+            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle("Regular - NCT")
+                    .setContentText("now playing . . .")
+                    .setLargeIcon(bitmapLargeIcon)
+                    .setStyle(NotificationCompat.BigPictureStyle().bigPicture(bitmap))
+                    .setContentIntent(pendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            with(NotificationManagerCompat.from(this)){
+                notify(notificationId, builder.build())
+            }
         }
         if (currentIndex === 4)
         {
             songTitle.setText("Save Your Tears - The Weeknd")
             imageView.setImageResource(R.drawable.saveyourtears)
+
+            val intent = Intent(this,MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+
+            val pendingIntent:PendingIntent = PendingIntent.getActivity(this,0,intent,0)
+
+            val bitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.saveyourtears)
+            val bitmapLargeIcon = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.saveyourtears)
+
+            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle("Save Your Tears - The Weeknd")
+                    .setContentText("now playing . . .")
+                    .setLargeIcon(bitmapLargeIcon)
+                    .setStyle(NotificationCompat.BigPictureStyle().bigPicture(bitmap))
+                    .setContentIntent(pendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            with(NotificationManagerCompat.from(this)){
+                notify(notificationId, builder.build())
+            }
         }
 
         mMediaPlayer.setOnPreparedListener(object: MediaPlayer.OnPreparedListener {
